@@ -3,7 +3,6 @@ import { Grid, Button } from 'semantic-ui-react'
 import cuid from 'cuid';
 import EventList from '../EventList/EventList'
 import EventForm from '../EventForm/EventForm'
-import { Object } from 'core-js';
 
 const eventsDashboard = [
   {
@@ -12,9 +11,9 @@ const eventsDashboard = [
     date: '2018-03-27',
     category: 'culture',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
-    city: 'London, UK',
-    venue: "Tower of London, St Katharine's & Wapping, London",
+      'プロセクハラーによる数々の伝説をお伝えします。',
+    city: 'Tokyo, Japan',
+    venue: "例のプール",
     hostedBy: 'ピカチュウ',
     hostPhotoURL: 'https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif',
     attendees: [
@@ -37,8 +36,8 @@ const eventsDashboard = [
     category: 'drinks',
     description:
       'ゼニガメ帝国のさらなる繁栄のためにできることをみんなで考える会です。具体的には、ヒトカゲを1匹残らず駆逐をする方法についてです。',
-    city: 'London, UK',
-    venue: 'Punch & Judy, Henrietta Street, London, UK',
+    city: 'Tokyo, Japan',
+    venue: 'ゼニガメ城 西ホール2F大広間',
     hostedBy: 'ゼー二ガーメ3世',
     hostPhotoURL: 'https://media.giphy.com/media/LxSFsOTa3ytEY/giphy.gif',
     attendees: [
