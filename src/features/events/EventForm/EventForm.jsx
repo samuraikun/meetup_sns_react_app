@@ -121,7 +121,7 @@ class EventForm extends Component {
                 showTimeSelect
                 placeholder='Event Date'
               />
-              <Button disabled={invalid || submitting || pristine} onClick={this.onFormSubmit} positive type="submit">
+              <Button disabled={invalid || submitting || pristine} positive type="submit">
                 Submit
               </Button>
               <Button type="button" onClick={this.props.history.goBack}>
