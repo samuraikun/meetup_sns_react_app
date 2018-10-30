@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 import moment from 'moment'
-import { composeValidators, combineValidators, isRequired, hasLengthGreaterThan } from 'revalidate'
 import cuid from 'cuid'
 import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react'
+import { composeValidators, combineValidators, isRequired, hasLengthGreaterThan } from 'revalidate'
 import { createEvent, updateEvent } from '../eventActions'
 import TextInput from '../../../app/common/form/TextInput'
 import TextArea from '../../../app/common/form/TextArea'
@@ -65,8 +65,8 @@ class EventForm extends Component {
         hostedBy: 'Bob'
       }
 
-      this.props.createEvent(newEvent)
-      this.props.history.push('/events')
+      this.props.createEvent(newEvent);
+      this.props.history.push('/events');
     }
   }
 
@@ -79,7 +79,12 @@ class EventForm extends Component {
           <Segment>
             <Header sub color='teal' content='Event Details' />
             <Form onSubmit={this.props.handleSubmit(this.onFormSubmit)}>
-              <Field name='title' type='text' component={TextInput} placeholder='Give your event a name' />
+              <Field
+                name='title'
+                type='text'
+                component={TextInput}
+                placeholder='Give your event a name'
+              />
               <Field
                 name='category'
                 type='text'
@@ -87,15 +92,31 @@ class EventForm extends Component {
                 options={category}
                 placeholder='What is your event a name'
               />
-              <Field name='description' type='text' rows={3} component={TextArea} placeholder='Tell us about your event' />
+              <Field
+                name='description'
+                type='text'
+                rows={3}
+                component={TextArea}
+                placeholder='Tell us about your event'
+              />
               <Header sub color='teal' content='Event Location Details' />
-              <Field name='city' type='text' component={TextInput} placeholder='Event City' />
-              <Field name='venue' type='text' component={TextInput} placeholder='Event Venue' />
+              <Field
+                name='city'
+                type='text'
+                component={TextInput}
+                placeholder='Event City'
+              />
+              <Field
+                name='venue'
+                type='text'
+                component={TextInput}
+                placeholder='Event Venue'
+              />
               <Field
                 name='date'
                 type='text'
                 component={DateInput}
-                dateFormat='YYYY/MM/DD HH:mm'
+                dateFormat='YYYY-MM-DD HH:mm'
                 timeFormat='HH:mm'
                 showTimeSelect
                 placeholder='Event Date'
