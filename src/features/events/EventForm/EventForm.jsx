@@ -46,7 +46,8 @@ const validate = combineValidators({
     hasLengthGreaterThan(4)({message: '5文字以上で入力してください'})
   )(),
   city: isRequired('city'),
-  venue: isRequired('venue')
+  venue: isRequired('venue'),
+  date: isRequired('date')
 })
 
 class EventForm extends Component {
