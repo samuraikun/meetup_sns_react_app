@@ -75,8 +75,22 @@ class EventForm extends Component {
     }
   }
 
+  handleVenueSelect = async selectedVenue => {
+    try {
+      const results = await geocodeByAddress(selectedVenue)
+      const venueGeocode = results[0]
+      const latlng = await getLatLng(venueGeocode)
+
+      this.setState({venueLatLng: latlng})
+      this.props.change('venue', selectedVenue)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   onFormSubmit = values => {
     values.date = moment(values.date).format()
+    values.venueLatLng = this.state.venueLatLng
 
     if (this.props.initialValues.id) {
       this.props.updateEvent(values)
@@ -149,6 +163,7 @@ class EventForm extends Component {
                 }}
                 component={PlaceInput}
                 placeholder='Event Venue'
+                onSelect={this.handleVenueSelect}
               />}
               <Field
                 name='date'
