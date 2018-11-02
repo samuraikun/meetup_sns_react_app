@@ -1,75 +1,62 @@
 import { createReducer } from '../../app/common/util/reducerUtil'
 import { CREATE_EVENT, UPDATE_EVENT, DELETE_EVENT } from './eventConstants'
 
-const initialState = [
+ const initialState = [
   {
     id: '1',
-    title: 'ピカチュウだからできる絶対にバレないセクハラ講座',
-    date: '2018-03-27',
+    title: 'Trip to Empire State building',
+    date: '2018-03-21',
     category: 'culture',
-    description:
-      'プロセクハラーによる数々の伝説をお伝えします。',
-    city: 'Tokyo, Japan',
-    venue: "例のプール",
-    hostedBy: 'ピカチュウ',
-    hostPhotoURL: 'https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    city: 'NY, USA',
+    venue: 'Empire State Building, 5th Avenue, New York, NY, USA',
+    venueLatLng: {
+      lat: 40.7484405,
+      lng: -73.98566440000002
+    },
+    hostedBy: 'Bob',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/20.jpg',
     attendees: [
       {
         id: 'a',
-        name: 'ピカチュウ',
-        photoURL: 'https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif'
+        name: 'Bob',
+        photoURL: 'https://randomuser.me/api/portraits/men/20.jpg'
       },
       {
         id: 'b',
-        name: 'ゼニガメ',
-        photoURL: 'https://media.giphy.com/media/LxSFsOTa3ytEY/giphy.gif'
+        name: 'Tom',
+        photoURL: 'https://randomuser.me/api/portraits/men/22.jpg'
       }
     ]
   },
   {
     id: '2',
-    title: 'ゼニガメ帝国のさらなる領土拡大について',
-    date: '2018-03-28',
+    title: 'Trip to Punch and Judy Pub',
+    date: '2018-03-18',
     category: 'drinks',
-    description:
-      'ゼニガメ帝国のさらなる繁栄のためにできることをみんなで考える会です。具体的には、ヒトカゲを1匹残らず駆逐をする方法についてです。',
-    city: 'Tokyo, Japan',
-    venue: 'ゼニガメ城 西ホール2F大広間',
-    hostedBy: 'ゼー二ガーメ3世',
-    hostPhotoURL: 'https://media.giphy.com/media/LxSFsOTa3ytEY/giphy.gif',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sollicitudin ligula eu leo tincidunt, quis scelerisque magna dapibus. Sed eget ipsum vel arcu vehicula ullamcorper.',
+    city: 'London, UK',
+    venue: 'Punch & Judy, Henrietta Street, London, UK',
+    venueLatLng: {
+      lat: 51.5118074,
+      lng: -0.12300089999996544
+    },
+    hostedBy: 'Tom',
+    hostPhotoURL: 'https://randomuser.me/api/portraits/men/22.jpg',
     attendees: [
-      {
-        id: 'b',
-        name: 'ゼニガメ',
-        photoURL: 'https://media.giphy.com/media/LxSFsOTa3ytEY/giphy.gif'
-      },
       {
         id: 'a',
-        name: 'ピカチュウ',
-        photoURL: 'https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif'
-      }
-    ]
-  },
-  {
-    id: '3',
-    title: 'ピカチュウ先輩を出し抜くまでにやったこと',
-    date: '2018-03-28',
-    category: 'drinks',
-    description:
-      'アニメで、レギュラーずっとはってるからって調子に乗ってるピカチュウ先輩をどうにかして出し抜いた方法について話します！',
-    city: 'Tokyo, Japan',
-    venue: 'ピチュー財団記念迎賓館',
-    hostedBy: 'ピチュー',
-    hostPhotoURL: 'https://media.giphy.com/media/GDuOdHz0lCzNS/giphy.gif',
-    attendees: [
+        name: 'Bob',
+        photoURL: 'https://randomuser.me/api/portraits/men/20.jpg'
+      },
       {
         id: 'b',
-        name: 'ゼニガメ',
-        photoURL: 'https://media.giphy.com/media/LxSFsOTa3ytEY/giphy.gif'
+        name: 'Tom',
+        photoURL: 'https://randomuser.me/api/portraits/men/22.jpg'
       }
     ]
   }
-]
+];
 
 export const createEvent = (state, payload) => {
   return [...state, Object.assign({}, payload.event)]
