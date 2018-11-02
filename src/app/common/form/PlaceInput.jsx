@@ -11,13 +11,24 @@ const styles = {
 
 class PlaceInput extends Component {
   state = {
+    address: '',
     scriptLoaded: false
   }
 
   handleScriptLoaded = () => this.setState({scriptLoaded: true})
 
+  onChange = address => this.setState({address})
+
   render() {
-    const { input, width, onSelect, placeholder, options, meta: {touched, error} } = this.props
+    const { width, onSelect, placeholder, options, meta: {touched, error} } = this.props
+
+    // FIXME Redux Form の onChange の value を使って自動補完する場合
+    // 　　　 日本語入力の変換を待たずして、自動補完のイベントが発火するため、日本語入力がうまくできない。
+    //       そのため、このコンポーネントのローカルステートの値を使用する
+    const inputProps = {
+      value: this.state.address,
+      onChange: this.onChange
+    }
 
     return (
       <Form.Field error={touched && !!error} width={width}>
@@ -27,7 +38,7 @@ class PlaceInput extends Component {
         />
         {this.state.scriptLoaded &&
         <PlacesAutoComplete
-          inputProps={{...input, placeholder}}
+          inputProps={{...inputProps, placeholder}}
           options={options}
           onSelect={onSelect}
           styles={styles}
