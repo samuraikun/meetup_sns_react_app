@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import { Segment, Grid, Icon, Button } from 'semantic-ui-react'
 import format from 'date-fns/format'
-import japan from 'date-fns/locale/ja'
 import EventDetailMap from './EventDetailMap'
 
 class EventDetailInfo extends Component {
   state = {
     showMap: false
+  }
+
+  componentWillUnmount() {
+    this.setState({showMap: false})
   }
 
   showMapToggle = () => {
