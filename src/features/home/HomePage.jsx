@@ -11,11 +11,11 @@ const HomePage = ({history}) => {
               src="/assets/logo.png"
               alt="logo"
             />
-            <div className="content">Re-vents</div>
+            <div className="content">GiriGiri</div>
           </h1>
-          <h2>Do whatever you want to do</h2>
+          <h2>どうしても行きたいイベントがありますか？</h2>
           <div onClick={() => history.push('/events')} className="ui huge white inverted button">
-            Get Started
+            イベントを探す
             <i className="right arrow icon" />
           </div>
         </div>

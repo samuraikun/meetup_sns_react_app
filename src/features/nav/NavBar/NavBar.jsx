@@ -39,7 +39,7 @@ class NavBar extends Component {
         <Container>
           <Menu.Item as={Link} to='/' header>
             <img src="/assets/logo.png" alt="logo" />
-            Poke-Meet
+            GiriGiri
           </Menu.Item>
           <Menu.Item as={NavLink} to='/events' name="Events" />
           <Menu.Item as={NavLink} to='/test' name="Test" />
