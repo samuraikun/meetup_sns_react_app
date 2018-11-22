@@ -63,7 +63,7 @@ const AccountPage = ({ error, invalid, submitting, handleSubmit, updatePassword,
         </div>
       )}
 
-      {providerId && providerId === 'google' && (
+      {providerId && providerId === 'google.com' && (
         <div>
           <Header color="teal" sub content="Google Account" />
           <p>Please visit Google to update your account settings</p>

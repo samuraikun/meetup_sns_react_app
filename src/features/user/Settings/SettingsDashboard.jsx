@@ -14,9 +14,7 @@ const actions = {
 }
 
 const mapStateToProps = state => ({
-  // null 参照による undefined error を防ぐため、
-  // Firebase からのロードが完了してから、firebase 内のデータを参照する
-  providerId: state.firebase.auth.isLoaded && state.firebase.auth.providerData[0].providerId
+  providerId:state.firebase.auth.providerData[0].providerId
 });
 
 const SettingsDashboard = ({ updatePassword, providerId }) => {
