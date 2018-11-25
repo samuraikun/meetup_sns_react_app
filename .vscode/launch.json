@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src"
+    },
+    {
       "type": "node",
       "name": "vscode-jest-tests",
       "request": "launch",
@@ -22,7 +29,7 @@
       "type": "node",
       "request": "launch",
       "name": "プログラムの起動",
-      "program": "${workspaceFolder}/start"
+      "program": "${workspaceFolder}/src"
     }
   ]
 }
