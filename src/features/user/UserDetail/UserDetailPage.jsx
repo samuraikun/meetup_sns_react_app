@@ -1,29 +1,44 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+import { Link } from 'react-router-dom';
 import { Button, Card, Grid, Header, Icon, Image, Item, List, Menu, Segment } from "semantic-ui-react";
+import UserDetailHeader from './UserDetailHeader';
+
+const query = ({ auth }) => {
+  return [
+    {
+      collection: 'users',
+      doc: auth.uid,
+      subcollections: [{collection: 'photos'}],
+      storeAs: 'photos'
+    }
+  ];
+}
+
+const mapStateToProps = state => ({
+  auth: state.firebase.auth,
+  profile: state.firebase.profile,
+  photos: state.firestore.ordered.photos
+});
 
 class UserDetailedPage extends Component {
   render() {
+    const { profile, photos } = this.props;
+
     return (
       <Grid>
         <Grid.Column width={12}>
           <Segment>
             <Item.Group>
-              <Item>
-                <Item.Image avatar size='small' src='https://randomuser.me/api/portraits/women/60.jpg'/>
-                <Item.Content verticalAlign='bottom'>
-                  <Header as='h1'>First Name</Header>
-                  <br/>
-                  <Header as='h3'>Occupation</Header>
-                  <br/>
-                  <Header as='h3'>27, Lives in London, UK</Header>
-                </Item.Content>
-              </Item>
+              <UserDetailHeader profile={profile} />
             </Item.Group>
           </Segment>
         </Grid.Column>
         <Grid.Column width={4}>
           <Segment>
-            <Button color='teal' fluid basic content='Edit Profile'/>
+            <Button as={Link} to='/settings/basic' color='teal' fluid basic content='Edit Profile'/>
           </Segment>
         </Grid.Column>
 
@@ -32,26 +47,18 @@ class UserDetailedPage extends Component {
             <Grid columns={2}>
               <Grid.Column width={10}>
                 <Header icon='smile' content='About Display Name'/>
-                <p>I am a: <strong>Occupation Placeholder</strong></p>
-                <p>Originally from <strong>United Kingdom</strong></p>
-                <p>Member Since: <strong>28th March 2018</strong></p>
-                <p>Description of user</p>
+                <p>I am a: <strong>{profile.about}</strong></p>
+                <p>Originally from <strong>{profile.origin || 'somewhere..'}</strong></p>
               </Grid.Column>
               <Grid.Column width={6}>
                 <Header icon='heart outline' content='Interests'/>
                 <List>
-                  <Item>
-                    <Icon name='heart'/>
-                    <Item.Content>Interest 1</Item.Content>
-                  </Item>
-                  <Item>
-                    <Icon name='heart'/>
-                    <Item.Content>Interest 2</Item.Content>
-                  </Item>
-                  <Item>
-                    <Icon name='heart'/>
-                    <Item.Content>Interest 3</Item.Content>
-                  </Item>
+                  {profile.interests.length !== 0 && profile.interests.map(interest => (
+                    <Item key={interest}>
+                      <Icon name='heart'/>
+                      <Item.Content>{interest}</Item.Content>
+                    </Item>
+                  ))}
                 </List>
               </Grid.Column>
             </Grid>
@@ -62,10 +69,10 @@ class UserDetailedPage extends Component {
           <Segment attached>
             <Header icon='image' content='Photos'/>
             <Image.Group size='small'>
-              <Image src='https://randomuser.me/api/portraits/women/60.jpg'/>
-              <Image src='https://randomuser.me/api/portraits/women/30.jpg'/>
-              <Image src='https://randomuser.me/api/portraits/women/40.jpg'/>
-              <Image src='https://randomuser.me/api/portraits/women/50.jpg'/>
+              {photos &&
+                photos.map(photo => (
+                  <Image key={photo.id} src={photo.url} />
+              ))}
             </Image.Group>
           </Segment>
         </Grid.Column>
@@ -111,4 +118,7 @@ class UserDetailedPage extends Component {
   }
 }
 
-export default UserDetailedPage;
+export default compose(
+  connect(mapStateToProps),
+  firestoreConnect(auth => query(auth))
+)(UserDetailedPage);
