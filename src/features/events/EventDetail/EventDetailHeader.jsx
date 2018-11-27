@@ -10,19 +10,24 @@ import { Link } from 'react-router-dom'
 import format from 'date-fns/format'
 
 const eventImageStyle = {
-    filter: 'brightness(30%)'
+  filter: 'brightness(30%)'
 };
 
 const eventImageTextStyle = {
-    position: 'absolute',
-    bottom: '5%',
-    left: '5%',
-    width: '100%',
-    height: 'auto',
-    color: 'white'
+  position: 'absolute',
+  bottom: '5%',
+  left: '5%',
+  width: '100%',
+  height: 'auto',
+  color: 'white'
 };
 
-const EventDetailHeader = ({ event }) => {
+const EventDetailHeader = ({ event, isHost, isGoing, goingToEvent, cancelGoingToEvent }) => {
+  let eventDate;
+  if (event.date) {
+    eventDate = event.date.toDate();
+  }
+
   return (
     <div>
       <Segment.Group>
@@ -38,7 +43,7 @@ const EventDetailHeader = ({ event }) => {
                     content={event.title}
                     style={{ color: 'white' }}
                   />
-                  <p>{format(event.date, 'YYYY/MM/DD')}</p>
+                  <p>{format(eventDate, 'YYYY/MM/DD')}</p>
                   <p>
                     Hosted by <strong>{event.hostedBy}</strong>
                   </p>
@@ -49,12 +54,19 @@ const EventDetailHeader = ({ event }) => {
         </Segment>
   
         <Segment attached="bottom">
-          <Button>Cancel My Place</Button>
-          <Button color="teal">JOIN THIS EVENT</Button>
-  
-          <Button as={Link} to={`/manage/${event.id}`} color="orange" floated="right">
+          {!isHost &&
+            <React.Fragment>
+              {isGoing ? (
+                <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>
+              ) : (
+                <Button onClick={() => goingToEvent(event)} color="teal">JOIN THIS EVENT</Button>
+              )}
+            </React.Fragment>
+          }
+          {isHost &&
+          <Button as={Link} to={`/manage/${event.id}`} color="orange">
             Manage Event
-          </Button>
+          </Button>}
         </Segment>
       </Segment.Group>
     </div>
