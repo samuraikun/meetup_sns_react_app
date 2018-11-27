@@ -1,8 +1,8 @@
 /*global google*/
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { withFirestore } from 'react-redux-firebase'
 import { reduxForm, Field } from 'redux-form'
-import moment from 'moment'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import Script from 'react-load-script'
 import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react'
@@ -14,12 +14,11 @@ import SelectInput from '../../../app/common/form/SelectInput'
 import DateInput from '../../../app/common/form/DateInput'
 import PlaceInput from '../../../app/common/form/PlaceInput'
 
-const mapStateToProps = (state, ownProps) => {
-  const eventId = ownProps.match.params.id
+const mapStateToProps = state => {
   let event = {}
 
-  if (eventId && state.events.length > 0) {
-    event = state.events.filter(event => event.id === eventId)[0]
+  if (state.firestore.ordered.events && state.firestore.ordered.events[0]) {
+    event = state.firestore.ordered.events[0]
   }
 
   return {
@@ -61,6 +60,17 @@ class EventForm extends Component {
     scriptLoaded: false
   }
 
+  async componentDidMount() {
+    const { firestore, match } = this.props
+    let event = await firestore.get(`events/${match.params.id}`)
+
+    if (event.exists) {
+      this.setState({
+        venueLatLng: event.data().venueLatLng
+      })
+    }
+  }
+
   handleCitySelect = async selectedCity => {
     try {
       const results = await geocodeByAddress(selectedCity)
@@ -88,7 +98,6 @@ class EventForm extends Component {
   }
 
   onFormSubmit = values => {
-    values.date = moment(values.date).format()
     values.venueLatLng = this.state.venueLatLng
 
     if (this.props.initialValues.id) {
@@ -180,4 +189,4 @@ class EventForm extends Component {
   }
 }
 
-export default connect(mapStateToProps, actions)(reduxForm({ form: 'eventForm', enableReinitialize: true, validate })(EventForm));
+export default withFirestore(connect(mapStateToProps, actions)(reduxForm({ form: 'eventForm', enableReinitialize: true, validate })(EventForm)));

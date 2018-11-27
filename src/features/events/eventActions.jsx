@@ -1,8 +1,9 @@
 import { toastr } from 'react-redux-toastr'
-import { DELETE_EVENT, UPDATE_EVENT, FETCH_EVENTS } from './eventConstants'
+import { DELETE_EVENT, FETCH_EVENTS } from './eventConstants'
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../async/asyncActions'
 import { fetchSampleData } from '../../app/data/mockApi'
 import { createNewEvent } from '../../app/common/util/helpers'
+import moment from 'moment'
 
 export const fetchEvents = events => {
   return {
@@ -35,15 +36,15 @@ export const createEvent = event => {
 }
 
 export const updateEvent = event => {
-  return async dispatch => {
+  return async (dispatch, getState, { getFirestore }) => {
+    const firestore = getFirestore()
+    if (event.date !== getState().firestore.ordered.events[0].date) {
+      event.date = moment(event.date).toDate()
+    }
+
     try {
-      dispatch({
-        type: UPDATE_EVENT,
-        payload: {
-          event
-        }
-      })
-      toastr.success('Sucess!', 'Event has been created')
+      await firestore.update(`events/${event.id}`, event)
+      toastr.success('Sucess!', 'Event has been updated!')
     } catch (error) {
       toastr.error('Oops', 'Something went wrong')
     }
