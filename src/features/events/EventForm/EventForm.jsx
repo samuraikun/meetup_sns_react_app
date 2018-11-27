@@ -5,7 +5,6 @@ import { reduxForm, Field } from 'redux-form'
 import moment from 'moment'
 import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
 import Script from 'react-load-script'
-import cuid from 'cuid'
 import { Segment, Form, Button, Grid, Header } from 'semantic-ui-react'
 import { composeValidators, combineValidators, isRequired, hasLengthGreaterThan } from 'revalidate'
 import { createEvent, updateEvent } from '../eventActions'
@@ -96,14 +95,7 @@ class EventForm extends Component {
       this.props.updateEvent(values)
       this.props.history.goBack()
     } else {
-      const newEvent = {
-        ...values,
-        id: cuid(),
-        hostPhotoURL: '/assets/user.png',
-        hostedBy: 'Bob'
-      }
-
-      this.props.createEvent(newEvent);
+      this.props.createEvent(values);
       this.props.history.push('/events');
     }
   }
