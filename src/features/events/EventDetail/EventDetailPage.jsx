@@ -17,7 +17,8 @@ const mapStateToProps = state => {
   }
 
   return {
-    event
+    event,
+    auth: state.firebase.auth
   }
 }
 
@@ -33,13 +34,15 @@ class EventDetailPage extends Component {
   }
 
   render() {
-    const { event } = this.props
+    const { event, auth } = this.props
     const attendees = event && event.attendees && objectToArray(event.attendees)
+    const isHost = event.hostUid === auth.uid
+    const isGoing = attendees && attendees.some(a => a.id === auth.uid)
 
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventDetailHeader event={event} />
+          <EventDetailHeader event={event} isHost={isHost} isGoing={isGoing} />
           <EventDetailInfo event={event} />
           <EventDetailChat />
         </Grid.Column>
