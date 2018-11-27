@@ -10,16 +10,16 @@ import { Link } from 'react-router-dom'
 import format from 'date-fns/format'
 
 const eventImageStyle = {
-    filter: 'brightness(30%)'
+  filter: 'brightness(30%)'
 };
 
 const eventImageTextStyle = {
-    position: 'absolute',
-    bottom: '5%',
-    left: '5%',
-    width: '100%',
-    height: 'auto',
-    color: 'white'
+  position: 'absolute',
+  bottom: '5%',
+  left: '5%',
+  width: '100%',
+  height: 'auto',
+  color: 'white'
 };
 
 const EventDetailHeader = ({ event, isHost, isGoing, goingToEvent }) => {

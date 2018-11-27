@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withFirestore } from 'react-redux-firebase'
-import { toastr } from 'react-redux-toastr'
 import { Grid } from 'semantic-ui-react'
 import EventDetailHeader from './EventDetailHeader'
 import EventDetailInfo from './EventDetailInfo'
