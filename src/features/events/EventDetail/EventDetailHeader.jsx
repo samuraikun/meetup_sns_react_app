@@ -23,6 +23,11 @@ const eventImageTextStyle = {
 };
 
 const EventDetailHeader = ({ event }) => {
+  let eventDate;
+  if (event.date) {
+    eventDate = event.date.toDate();
+  }
+
   return (
     <div>
       <Segment.Group>
@@ -38,7 +43,7 @@ const EventDetailHeader = ({ event }) => {
                     content={event.title}
                     style={{ color: 'white' }}
                   />
-                  <p>{format(event.date, 'YYYY/MM/DD')}</p>
+                  <p>{format(eventDate, 'YYYY/MM/DD')}</p>
                   <p>
                     Hosted by <strong>{event.hostedBy}</strong>
                   </p>
