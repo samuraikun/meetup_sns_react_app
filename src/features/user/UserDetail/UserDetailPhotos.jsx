@@ -19,4 +19,4 @@ const UserDetailPhotos = ({ photos }) => {
   );
 }
 
-export default UserDetailPhotos
+export default UserDetailPhotos;
