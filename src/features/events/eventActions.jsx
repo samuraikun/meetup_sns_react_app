@@ -60,24 +60,54 @@ export const cancelToggle = (cancelled, eventId) => async (dispatch, getState, {
   }
 }
 
-export const getEventsForDashboard = () => async (dispatch, getState) => {
+export const getEventsForDashboard = lastEvent => async (dispatch, getState) => {
   let today = new Date(Date.now())
   const firestore = firebase.firestore()
-  const eventsQuery = firestore.collection('events').where('date', '>=', today)
+  const eventsRef = firestore.collection('events')
 
   try {
     dispatch(asyncActionStart())
 
-    let querySnap = await eventsQuery.get()
-    let events = [];
+    // ページネーションの境界値となるドキュメントを取得する
+    let startAfter =
+      lastEvent &&
+      (await firestore
+        .collection('events')
+        .doc(lastEvent.id)
+        .get())
+    let query
+
+    // ページネーションの１ページ目の結果 or ２ページ以降の結果を取得する
+    lastEvent
+      ? (query = eventsRef
+          .where('date', '>=', today)
+          .orderBy('date')
+          .startAfter(startAfter)
+          .limit(2))
+      : (query = eventsRef
+          .where('date', '>=', today)
+          .orderBy('date')
+          .limit(2))
+
+    let querySnap = await query.get()
+
+    // 検索結果が、存在しないとき
+    if (querySnap.docs.length === 0) {
+      dispatch(asyncActionFinish())
+      return querySnap;
+    }
+
+    let events = []
 
     for (let i=0; i < querySnap.docs.length; i++) {
       let evt = {...querySnap.docs[i].data(), id: querySnap.docs[i].id}
       events.push(evt)
     }
-    
-    dispatch({type: FETCH_EVENTS, payload: { events }})
+
+    dispatch({ type: FETCH_EVENTS, payload: { events } })
     dispatch(asyncActionFinish())
+
+    return querySnap;
   } catch (error) {
     console.log(error)
     dispatch(asyncActionError())
