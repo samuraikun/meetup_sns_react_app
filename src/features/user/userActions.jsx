@@ -158,7 +158,7 @@ export const getUserEvents = (userUid, activeTab) => async (dispatch, getState) 
       query = eventsRef
         .where('userUid', '==', userUid)
         .where('eventDate', '<=', today)
-        .orderBy('eventDate');
+        .orderBy('eventDate', 'desc');
       break;
     case 2: // future events
       query = eventsRef
@@ -170,7 +170,7 @@ export const getUserEvents = (userUid, activeTab) => async (dispatch, getState) 
       query = eventsRef
         .where('userUid', '==', userUid)
         .where('host', '==', true)
-        .orderBy('eventDate, desc');
+        .orderBy('eventDate', 'desc');
       break;
     default:
       query = eventsRef
