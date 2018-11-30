@@ -21,3 +21,12 @@ yarn-debug.log*
 yarn-error.log*
 
 src/app/config/key.js
+
+### Firebase ###
+.idea
+functions/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
