@@ -1,3 +1,25 @@
 {
-  "indexes": []
+  "indexes": [
+    {
+      "collectionId": "event_attendee",
+      "fields": [
+        { "fieldPath": "userUid", "mode": "ASCENDING" },
+        { "fieldPath": "eventDate", "mode": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionId": "event_attendee",
+      "fields": [
+        { "fieldPath": "userUid", "mode": "ASCENDING" },
+        { "fieldPath": "eventDate", "mode": "ASCENDING"}
+      ]
+    },
+    {
+      "collectionId": "event_attendee",
+      "fields": [
+        { "fieldPath": "host", "mode": "ASCENDING" },
+        { "fieldPath": "eventDate", "mode": "DESCENDING" }
+      ]
+    }
+  ]
 }

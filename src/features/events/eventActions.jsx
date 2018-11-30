@@ -1,16 +1,9 @@
 import { toastr } from 'react-redux-toastr'
-import { DELETE_EVENT, FETCH_EVENTS } from './eventConstants'
+import { FETCH_EVENTS } from './eventConstants'
 import { asyncActionStart, asyncActionFinish, asyncActionError } from '../async/asyncActions'
-import { fetchSampleData } from '../../app/data/mockApi'
 import { createNewEvent } from '../../app/common/util/helpers'
 import moment from 'moment'
-
-export const fetchEvents = events => {
-  return {
-    type: FETCH_EVENTS,
-    payload: events
-  }
-}
+import firebase from '../../app/config/firebase'
 
 export const createEvent = event => {
   return async (dispatch, getState, { getFirestore }) => {
@@ -67,26 +60,56 @@ export const cancelToggle = (cancelled, eventId) => async (dispatch, getState, {
   }
 }
 
-export const deleteEvent = eventId => {
-  return {
-    type: DELETE_EVENT,
-    payload: {
-      eventId
-    }
-  }
-}
+export const getEventsForDashboard = lastEvent => async (dispatch, getState) => {
+  let today = new Date(Date.now())
+  const firestore = firebase.firestore()
+  const eventsRef = firestore.collection('events')
 
-export const loadEvents = () => {
-  return async dispatch => {
-    try {
-      dispatch(asyncActionStart())
-      let events = await fetchSampleData()
-      console.log(events)
-      dispatch(fetchEvents(events))
+  try {
+    dispatch(asyncActionStart())
+
+    // ページネーションの境界値となるドキュメントを取得する
+    let startAfter =
+      lastEvent &&
+      (await firestore
+        .collection('events')
+        .doc(lastEvent.id)
+        .get())
+    let query
+
+    // ページネーションの１ページ目の結果 or ２ページ以降の結果を取得する
+    lastEvent
+      ? (query = eventsRef
+          .where('date', '>=', today)
+          .orderBy('date')
+          .startAfter(startAfter)
+          .limit(2))
+      : (query = eventsRef
+          .where('date', '>=', today)
+          .orderBy('date')
+          .limit(2))
+
+    let querySnap = await query.get()
+
+    // 検索結果が、存在しないとき
+    if (querySnap.docs.length === 0) {
       dispatch(asyncActionFinish())
-    } catch (error) {
-      console.log(error)
-      dispatch(asyncActionError())
+      return querySnap;
     }
+
+    let events = []
+
+    for (let i=0; i < querySnap.docs.length; i++) {
+      let evt = {...querySnap.docs[i].data(), id: querySnap.docs[i].id}
+      events.push(evt)
+    }
+
+    dispatch({ type: FETCH_EVENTS, payload: { events } })
+    dispatch(asyncActionFinish())
+
+    return querySnap;
+  } catch (error) {
+    console.log(error)
+    dispatch(asyncActionError())
   }
 }
