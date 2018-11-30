@@ -3,7 +3,6 @@ import {
   Grid,
   Segment,
   Header,
-  Menu,
   Card,
   Image,
   Tab

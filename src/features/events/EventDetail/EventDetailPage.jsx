@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withFirestore } from 'react-redux-firebase'
+import { withFirestore, firebaseConnect } from 'react-redux-firebase'
+import { compose } from 'redux'
 import { Grid } from 'semantic-ui-react'
 import EventDetailHeader from './EventDetailHeader'
 import EventDetailInfo from './EventDetailInfo'
@@ -8,6 +9,7 @@ import EventDetailChat from './EventDetailChat'
 import EventDetailSidebar from './EventDetailSidebar'
 import { objectToArray } from '../../../app/common/util/helpers'
 import { goingToEvent, cancelGoingToEvent } from '../../user/userActions'
+import { addEventComment } from '../eventActions'
 
 const mapStateToProps = state => {
   let event = {}
@@ -24,7 +26,8 @@ const mapStateToProps = state => {
 
 const actions = {
   goingToEvent,
-  cancelGoingToEvent
+  cancelGoingToEvent,
+  addEventComment
 }
 
 class EventDetailPage extends Component {
@@ -39,7 +42,7 @@ class EventDetailPage extends Component {
   }
 
   render() {
-    const { event, auth, goingToEvent, cancelGoingToEvent } = this.props
+    const { event, auth, goingToEvent, cancelGoingToEvent, addEventComment } = this.props
     const attendees = event && event.attendees && objectToArray(event.attendees)
     const isHost = event.hostUid === auth.uid
     const isGoing = attendees && attendees.some(a => a.id === auth.uid)
@@ -55,7 +58,7 @@ class EventDetailPage extends Component {
             cancelGoingToEvent={cancelGoingToEvent}
           />
           <EventDetailInfo event={event} />
-          <EventDetailChat />
+          <EventDetailChat addEventComment={addEventComment} eventId={event.id} />
         </Grid.Column>
         <Grid.Column width={6}>
           <EventDetailSidebar attendees={attendees} />
@@ -65,4 +68,8 @@ class EventDetailPage extends Component {
   }
 }
 
-export default withFirestore(connect(mapStateToProps, actions)(EventDetailPage));
+export default compose(
+  withFirestore,
+  connect(mapStateToProps, actions),
+  firebaseConnect(props => ([`event_chat/${props.match.params.id}`]))
+)(EventDetailPage)
