@@ -6,18 +6,27 @@ import EventDetailChatForm from './EventDetailChatForm'
 
 class EventDetailChat extends Component {
   state = {
-    showReplyForm: false
+    showReplyForm: false,
+    selectedCommentId: null
   }
 
-  handleOpenReplyForm = () => {
+  handleOpenReplyForm = id => () => {
     this.setState({
-      showReplyForm: true
+      showReplyForm: true,
+      selectedCommentId: id
+    });
+  }
+
+  handleCloseReplyForm = () => {
+    this.setState({
+      showReplyForm: false,
+      selectedCommentId: null
     });
   }
 
   render() {
     const { addEventComment, eventId, eventChat } = this.props;
-    const { showReplyForm } = this.state;
+    const { showReplyForm, selectedCommentId } = this.state;
 
     return (
       <React.Fragment>
@@ -43,11 +52,13 @@ class EventDetailChat extends Component {
                   </Comment.Metadata>
                   <Comment.Text>{comment.text}</Comment.Text>
                   <Comment.Actions>
-                    <Comment.Action onClick={this.handleOpenReplyForm}>Reply</Comment.Action>
-                    {showReplyForm && (
+                    <Comment.Action onClick={this.handleOpenReplyForm(comment.id)}>Reply</Comment.Action>
+                    {showReplyForm && selectedCommentId === comment.id && (
                       <EventDetailChatForm
                         addEventComment={addEventComment}
                         eventId={eventId}
+                        form={`reply_${comment.id}`}
+                        closeForm={this.handleCloseReplyForm}
                       />
                     )}
                   </Comment.Actions>
@@ -55,7 +66,7 @@ class EventDetailChat extends Component {
               </Comment>
             ))}
           </Comment.Group>
-          <EventDetailChatForm addEventComment={addEventComment} eventId={eventId} />
+          <EventDetailChatForm addEventComment={addEventComment} eventId={eventId} form={'newComment'} />
         </Segment>
       </React.Fragment>
     );

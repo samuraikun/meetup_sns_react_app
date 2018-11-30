@@ -5,9 +5,10 @@ import TextArea from '../../../app/common/form/TextArea';
 
 class EventDetailChatForm extends Component {
   handleCommentSubmit = values => {
-    const { addEventComment, reset, eventId } = this.props;
+    const { addEventComment, reset, eventId, closeForm } = this.props;
     addEventComment(eventId, values);
     reset();
+    closeForm();
   }
 
   render() {
@@ -30,4 +31,4 @@ class EventDetailChatForm extends Component {
   }
 }
 
-export default reduxForm({ form: 'eventChat' })(EventDetailChatForm);
+export default reduxForm({ Fields: 'comment' })(EventDetailChatForm);
