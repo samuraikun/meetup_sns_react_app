@@ -25,6 +25,7 @@ src/app/config/key.js
 ### Firebase ###
 .idea
 functions/node_modules/*
+functions/config/*
 **/.firebaserc
 
 ### Firebase Patch ###
