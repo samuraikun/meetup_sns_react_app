@@ -35,3 +35,19 @@ exports.userFollowing = functions.firestore.document('users/{followerUid}/follow
     return console.log(error);
   }
 });
+
+exports.userUnfollow = functions.firestore.document('users/{followerUid}/following/{followingUid}').onDelete((event, context) => {
+  const followingUid = context.params.followingUid;
+  const followerUid = context.params.followerUid;
+  
+  try {
+    console.log(`${followingUid} was unfollow ${followerUid}`);
+
+    return admin.firestore()
+      .collection('users').doc(followingUid)
+      .collection('followers').doc(followerUid)
+      .delete();
+  } catch (error) {
+    return console.log(error);
+  }
+});
