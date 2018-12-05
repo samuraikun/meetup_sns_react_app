@@ -10,7 +10,7 @@ import UserDetailSidebar from './UserDetailSidebar';
 import UserDetailEvents from './UserDetailEvents';
 import { userDetailquery } from '../userQueries';
 import LoadingComponent from '../../../app/layout/LoadingComponent';
-import { getUserEvents } from '../userActions';
+import { getUserEvents, followUser } from '../userActions';
 
 const mapStateToProps = (state, ownProps) => {
   let userUid = null;
@@ -35,7 +35,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const actions = {
-  getUserEvents
+  getUserEvents,
+  followUser
 }
 
 class UserDetailedPage extends Component {
@@ -48,7 +49,7 @@ class UserDetailedPage extends Component {
   }
 
   render() {
-    const { profile, photos, auth, match, requesting, events, eventsLoading } = this.props;
+    const { profile, photos, auth, match, requesting, events, eventsLoading, followUser } = this.props;
     const isCurrentUser = auth.uid === match.params.id;
     const loading = Object.values(requesting).some(a => a === true);
 
@@ -57,7 +58,7 @@ class UserDetailedPage extends Component {
     return (
       <Grid>
         <UserDetailHeader profile={profile} />
-        <UserDetailSidebar isCurrentUser={isCurrentUser} />
+        <UserDetailSidebar profile={profile} followUser={followUser} isCurrentUser={isCurrentUser} />
         <UserDetailDescription profile={profile} />
         {photos && photos.length > 0 &&
         <UserDetailPhotos photos={photos} />}
