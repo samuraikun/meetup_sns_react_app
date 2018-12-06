@@ -22,7 +22,7 @@ const eventImageTextStyle = {
   color: 'white'
 };
 
-const EventDetailHeader = ({ event, isHost, isGoing, goingToEvent, cancelGoingToEvent }) => {
+const EventDetailHeader = ({ loading, event, isHost, isGoing, goingToEvent, cancelGoingToEvent }) => {
   let eventDate;
   if (event.date) {
     eventDate = event.date.toDate();
@@ -59,7 +59,7 @@ const EventDetailHeader = ({ event, isHost, isGoing, goingToEvent, cancelGoingTo
               {isGoing ? (
                 <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>
               ) : (
-                <Button onClick={() => goingToEvent(event)} color="teal">JOIN THIS EVENT</Button>
+                <Button loading={loading} onClick={() => goingToEvent(event)} color="teal">JOIN THIS EVENT</Button>
               )}
             </React.Fragment>
           }
