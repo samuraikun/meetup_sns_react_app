@@ -22,7 +22,7 @@ const eventImageTextStyle = {
   color: 'white'
 };
 
-const EventDetailHeader = ({ loading, event, isHost, isGoing, goingToEvent, cancelGoingToEvent }) => {
+const EventDetailHeader = ({ loading, event, isHost, isGoing, goingToEvent, cancelGoingToEvent, authenticated, openModal }) => {
   let eventDate;
   if (event.date) {
     eventDate = event.date.toDate();
@@ -56,17 +56,28 @@ const EventDetailHeader = ({ loading, event, isHost, isGoing, goingToEvent, canc
         <Segment attached="bottom">
           {!isHost &&
             <React.Fragment>
-              {isGoing ? (
-                <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>
-              ) : (
-                <Button loading={loading} onClick={() => goingToEvent(event)} color="teal">JOIN THIS EVENT</Button>
+              {isGoing && <Button onClick={() => cancelGoingToEvent(event)}>Cancel My Place</Button>}
+
+              {isGoing &&
+                authenticated && (
+                  <Button loading={loading} onClick={() => goingToEvent(event)} color="teal">
+                    JOIN THIS EVENT
+                  </Button>
+              )}
+
+              {!authenticated && (
+                <Button loading={loading} onClick={() => openModal('UnauthModal')} color="teal">
+                  JOIN THIS EVENT
+                </Button>
               )}
             </React.Fragment>
           }
-          {isHost &&
-          <Button as={Link} to={`/manage/${event.id}`} color="orange">
-            Manage Event
-          </Button>}
+
+          {isHost && (
+            <Button as={Link} to={`/manage/${event.id}`} color="orange">
+              Manage Event
+            </Button>
+          )}
         </Segment>
       </Segment.Group>
     </div>
