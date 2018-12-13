@@ -76,7 +76,9 @@ class EventDetailPage extends Component {
       addEventComment,
       eventChat
     } = this.props
-    const attendees = event && event.attendees && objectToArray(event.attendees)
+    const attendees = event && event.attendees && objectToArray(event.attendees).sort((a, b) => {
+      return a.joinDate - b.joinDate;
+    });
     const isHost = event.hostUid === auth.uid
     const isGoing = attendees && attendees.some(a => a.id === auth.uid)
     const chatTree = !isEmpty(eventChat) && createDataTree(eventChat)
@@ -114,5 +116,5 @@ class EventDetailPage extends Component {
 export default compose(
   withFirestore,
   connect(mapStateToProps, actions),
-  firebaseConnect(props => ([`event_chat/${props.match.params.id}`]))
+  firebaseConnect(props => props.auth.isLoaded && !props.auth.isEmpty && ([`event_chat/${props.match.params.id}`]))
 )(EventDetailPage)
