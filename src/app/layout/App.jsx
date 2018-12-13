@@ -10,7 +10,8 @@ import PeopleDashboard from '../../features/user/PeopleDashboard/PeopleDashboard
 import EventDetailPage from '../../features/events/EventDetail/EventDetailPage';
 import HomePage from '../../features/home/HomePage'
 import TestComponent from '../../features/testarea/TestComponent';
-import ModalManager from '../../features/modals/ModalManager'
+import ModalManager from '../../features/modals/ModalManager';
+import NotFound from '../layout/NotFound';
 import { UserIsAuthenticated } from '../../features/auth/authWrapper'
 
 class App extends Component {
@@ -36,6 +37,7 @@ class App extends Component {
                   <Route path='/profile/:id' component={UserIsAuthenticated(UserDetailPage)} />
                   <Route path='/settings' component={UserIsAuthenticated(SettingDashboard)} />
                   <Route path='/createEvent' component={UserIsAuthenticated(EventForm)} />
+                  <Route path='/error' component={NotFound} />
                 </Switch>
               </Container>
             </div>
